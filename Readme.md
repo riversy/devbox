@@ -6,11 +6,9 @@
 
 ### Get Started
 
-Init environment and installs all necessary Software to your machine. 
-
-```bash
-devbox init
-```
+1. As the first step install Docker.
+2. As the second step install DevBox binaries.    
+3. Enjoy.
 
 ### Create New Project
 ```bash 
