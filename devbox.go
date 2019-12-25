@@ -38,10 +38,14 @@ func main() {
 			{
 				Name:  "start",
 				Usage: "Start a particular project or all projects at once",
-				Action: func(c *cli.Context) error {
-					fmt.Println("Start")
-					return nil
+				Flags: []cli.Flag {
+					&cli.BoolFlag{
+						Name: "all",
+						Aliases: []string{"a"},
+						Usage: "Start all available projects",
+					},
 				},
+				Action: commands.StartAction,
 			},
 			{
 				Name:  "kill",
