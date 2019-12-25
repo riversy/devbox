@@ -1,11 +1,12 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 	"github.com/ewave-com/devbox/utils"
 	"github.com/fatih/color"
-	"github.com/urfave/cli/v2"
 	"github.com/manifoldco/promptui"
+	"github.com/urfave/cli/v2"
 )
 
 // It's an entry point for project start flow. It allows:
@@ -17,8 +18,12 @@ func StartAction(c *cli.Context) error {
 	var error error = nil
 	projectName := c.Args().Get(0)
 
-
 	if projectName != "" {
+		if !IsValidProjectName(projectName) {
+			return errors.New(
+				fmt.Sprintf("Project with name '%s' is not exists.", projectName),
+			)
+		}
 		StartProject(projectName)
 	} else if utils.InArray("all", c.FlagNames()) {
 		var projects []utils.Project
@@ -40,6 +45,22 @@ func StartAction(c *cli.Context) error {
 	}
 
 	return nil
+}
+
+// Check if entered project name exists in the projects list.
+func IsValidProjectName(name string) bool {
+	projects, error := utils.GetProjectList()
+	if error != nil {
+		return false
+	}
+
+	for _, project := range projects {
+		if name == project.Name {
+			return true
+		}
+	}
+
+	return false
 }
 
 // It starts a prompt with a list of projects.
